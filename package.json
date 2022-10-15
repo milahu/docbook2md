@@ -2,7 +2,7 @@
   "name": "docbook2md",
   "version": "0.0.1",
   "description": "convert docbook to markdown",
-  "main": "docbook2md.js",
+  "main": "src/docbook2md.ts",
   "type": "module",
   "scripts": {
     "watch": "node watch.js",
