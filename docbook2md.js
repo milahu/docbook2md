@@ -43,21 +43,24 @@ https://github.com/syntax-tree/mdxast
 
 */
 
+const t1 = Date.now()
+
 import { readFileSync } from 'fs';
 import fs from 'fs';
 
 import { unified } from 'unified'
 import rehypeParse from 'rehype-parse'
 
-import rehypeRemark from 'rehype-remark' // html -> md
+//import rehypeRemark from 'rehype-remark' // html -> md
+import rehypeRemark from './rehype-remark/index.js' // html -> md
+
 import { toHtml } from 'hast-util-to-html' // html -> str
 import {toText} from 'hast-util-to-text'
-
-import {all} from 'mdast-util-to-hast'
 
 import remarkPrettier from 'remark-prettier';
 import report from 'vfile-reporter';
 
+import {toMdast, defaultHandlers, all, one} from 'hast-util-to-mdast'
 import {wrapChildren} from 'hast-util-to-mdast/lib/util/wrap-children.js'
 
 import {matches, select, selectAll} from 'hast-util-select'
@@ -78,6 +81,12 @@ import {h} from 'hastscript'
 // const ast = unified().use(remarkParse).use(remarkMdx).parse(src)
 
 // https://github.com/syntax-tree/hast-util-to-mdast/tree/main/lib/util
+
+
+
+function date() {
+  return new Date().toLocaleString('af')
+}
 
 
 
@@ -129,6 +138,12 @@ console.log(tree)
   .use(rehypeRemark, {
     // https://github.com/rehypejs/rehype-remark#optionshandlers
     // https://github.com/syntax-tree/hast-util-to-mdast#optionshandlers
+    // In a handler, you have access to h,
+    // which should be used to create mdast nodes from hast nodes.
+    // On h, there are several fields that may be of interest.
+    // Most interesting of them is h.wrapText,
+    // which is true if the mdast content can include newlines,
+    // and false if not (such as in headings or table cells).
     handlers: {
 
       // keep some html elements
@@ -141,7 +156,9 @@ console.log(tree)
       },
       */
 
-
+      'function': (h, node) => {
+        return h(node, 'inlineCode', all(h, node))
+      },
 
       /**
       * function signature
@@ -158,15 +175,20 @@ console.log(tree)
       subtitle(h, node) {
         // https://github.com/syntax-tree/hast-util-to-mdast/blob/main/lib/handlers/code.js
         return [
+          /* too verbose
+          // also, there can be description paragraphs
+          // after the signature
           h(
             node,
             'html',
             '### Signature'
           ),
+          */
           h(
             node,
             'code',
-            {lang: 'nix', meta: 'signature'},
+            // signatures are in haskell format
+            {lang: 'haskell'},
             //trimTrailingLines(wrapText(h, toText(node)))
             toText(node)
           ),
@@ -230,20 +252,26 @@ console.log(tree)
         //console.log(`section.depth: ${section.depth}`) // undefined
         //console.dir({ section }, { depth: 20 })
         //throw new Error('TODO')
-        if (!section) {
-          console.dir({ section }, { depth: 20 }); throw new Error('TODO')
-        }
+        //console.dir({ section }, { depth: 5 }); throw new Error('TODO')
+        // properties: { 'xml:id': 'function-library-lib.attrsets.attrByPath' },
         //console.dir({ section }, { depth: 20 }); throw new Error('TODO')
         const title = select('title', section)
+        /** @type {string | undefined} */
+        const id = section.properties && section.properties['xml:id']
         // TODO section id
         //console.dir({title}); throw new Error('TODO')
         // remove title
         if (section.children) {
           section.children = section.children.filter(node => node.tagName != 'title')
         }
+        const mdHeadId = id ? ` {#${id}}` : ''
         return [
           // TODO transform <function>lib.attrset.attrByPath</function>
-          h(section, 'html', `## ${toText(title)}\n`),
+          //h(section, 'html', `## ${toText(title)}${mdHeadId}\n`),
+          //h(section, 'heading', {depth: 3, id}, toText(title)),
+          // TODO implement id in heading-handler in hast-util-to-mdast
+          // or in markdown-renderer in remark-stringify
+          h(section, 'heading', {depth: 3, id}, all(h, title)),
           (
             section.children
               // FIXME TypeError: Cannot read properties of undefined (reading 'children')
@@ -515,8 +543,12 @@ console.log(tree)
       String(result) //.slice(0, 2000)
     )
     */
+
+    const t2 = Date.now()
+    const dt = (t2 - t1) / 1000;
+
     // write output to file
-    console.log(`writing ${outputPath}`)
+    console.log(`${date()} docbook2md.js: done after ${dt.toFixed(1)} sec. writing ${outputPath}`)
     fs.writeFileSync(outputPath, String(result), 'utf8')
 
   })
