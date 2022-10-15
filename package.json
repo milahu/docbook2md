@@ -1,0 +1,46 @@
+{
+  "name": "docbook2md",
+  "version": "0.0.1",
+  "description": "convert docbook to markdown",
+  "main": "docbook2md.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "docbook",
+    "markdown",
+    "convert",
+    "converter",
+    "transpile",
+    "transpiler",
+    "transform",
+    "transformer",
+    "remark",
+    "remarkjs",
+    "rehype",
+    "rehypejs",
+    "unified",
+    "unifiedjs"
+  ],
+  "author": "milahu",
+  "license": "MIT",
+  "dependencies": {
+    "hast-util-select": "^5.0.2",
+    "hast-util-to-html": "^8.0.3",
+    "hast-util-to-mdast": "^8.4.1",
+    "hast-util-to-text": "^3.1.1",
+    "hastscript": "^7.1.0",
+    "mdast-util-to-hast": "^12.2.4",
+    "prettier": "^2.7.1",
+    "rehype-parse": "^8.0.4",
+    "rehype-remark": "^9.1.2",
+    "remark-prettier": "^2.0.0",
+    "remark-stringify": "^10.0.2",
+    "unified": "^10.1.2",
+    "unist-util-remove": "^3.1.0",
+    "unist-util-visit": "^4.1.1",
+    "vfile-reporter": "^7.0.4",
+    "xast-util-from-xml": "^2.0.1"
+  }
+}
