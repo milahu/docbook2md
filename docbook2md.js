@@ -60,12 +60,13 @@ import report from 'vfile-reporter';
 
 import {wrapChildren} from 'hast-util-to-mdast/lib/util/wrap-children.js'
 
+import {matches, select, selectAll} from 'hast-util-select'
+
 /*
 import xmlParseBroken from '@starptech/rehype-webparser'
 import remarkHtml from 'remark-html' // md -> html
 import rehypeStringify from 'rehype-stringify' // html -> str
 import remarkStringify from 'remark-stringify' // md -> str
-import {matches, select, selectAll} from 'hast-util-select'
 import {visit} from 'unist-util-visit'
 import {remove} from 'unist-util-remove'
 import {h} from 'hastscript'
