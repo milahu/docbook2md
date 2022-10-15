@@ -51,8 +51,8 @@ import fs from 'fs';
 import { unified } from 'unified'
 import rehypeParse from 'rehype-parse'
 
-//import rehypeRemark from 'rehype-remark' // html -> md
-import rehypeRemark from './rehype-remark/index.js' // html -> md
+import rehypeRemark from 'rehype-remark' // html -> md
+//import rehypeRemark from './rehype-remark/index.js' // html -> md
 
 import { toHtml } from 'hast-util-to-html' // html -> str
 import {toText} from 'hast-util-to-text'
@@ -65,11 +65,13 @@ import {wrapChildren} from 'hast-util-to-mdast/lib/util/wrap-children.js'
 
 import {matches, select, selectAll} from 'hast-util-select'
 
+import remarkStringify from 'remark-stringify' // md -> str
+//import remarkStringify from './remark/packages/remark-stringify/index.js' // md -> str
+
 /*
 import xmlParseBroken from '@starptech/rehype-webparser'
 import remarkHtml from 'remark-html' // md -> html
 import rehypeStringify from 'rehype-stringify' // html -> str
-import remarkStringify from 'remark-stringify' // md -> str
 import {visit} from 'unist-util-visit'
 import {remove} from 'unist-util-remove'
 import {h} from 'hastscript'
@@ -510,14 +512,12 @@ console.log(tree)
   })
 
   // markdown tree -> markdown string
-  /*
   .use(remarkStringify, {
     bullet: '*',
     //fence: '~',
     fences: true,
     incrementListMarker: false,
   })
-  */
 
   // markdown tree -> pretty markdown string
   // remark-prettier registers a unified compiler.
@@ -527,11 +527,13 @@ console.log(tree)
   // Format HTML in Markdown
   // https://github.com/prettier/prettier/issues/8480
   // -> open issue!
+  /*
   .use(remarkPrettier, {
     options: {
       //asdf
     },
   })
+  */
 
   .process(inputText, function(error, result) {
     //console.error(report(err || output))
