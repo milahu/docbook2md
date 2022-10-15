@@ -84,7 +84,8 @@ import {h} from 'hastscript'
 /*
 https://github.com/NixOS/nixpkgs/blob/7a79469a24a71c26cb61b53590cb09ad6192654f/doc/functions/library/attrsets.xml
 */
-const inputPath = 'functions/library/attrsets.xml';
+//const inputPath = 'functions/library/attrsets.xml';
+const inputPath = 'attrsets.xml';
 
 const outputPath = inputPath.split('.').slice(0, -1).join('.') + '.md'
 

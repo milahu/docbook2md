@@ -6,14 +6,12 @@
 cd nixpkgs
 cd doc
 git clone https://github.com/milahu/docbook2md
-(
-  cd docbook2md
-  npm install
-)
-node docbook2md/docbook2md.js
+cd docbook2md
+npm install
+node docbook2md.js
 ```
 
-this will produce `functions/library/attrsets.md`
+this will convert `attrsets.xml` to `attrsets.md`
 
 ## use case
 
