@@ -3,8 +3,6 @@
 ## usage
 
 ```
-cd nixpkgs
-cd doc
 git clone https://github.com/milahu/docbook2md
 cd docbook2md
 npm install
