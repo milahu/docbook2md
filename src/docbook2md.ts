@@ -45,36 +45,36 @@ https://github.com/syntax-tree/mdxast
 
 const t1 = Date.now()
 
-import { readFileSync } from 'fs';
-import fs from 'fs';
+import { readFileSync } from 'https://deno.land/std@0.159.0/node/fs.ts';
+import fs from 'https://deno.land/std@0.159.0/node/fs.ts';
 
-import { unified } from 'unified'
-import rehypeParse from 'rehype-parse'
+import { unified } from 'npm:unified@10.1.2'
+import rehypeParse from 'npm:rehype-parse@8.0.4'
 
-import rehypeRemark from 'rehype-remark' // html -> md
+import rehypeRemark from 'npm:rehype-remark@9.1.2' // html -> md
 //import rehypeRemark from './rehype-remark/index.js' // html -> md
 
-import { toHtml } from 'hast-util-to-html' // html -> str
-import {toText} from 'hast-util-to-text'
+import { toHtml } from 'npm:hast-util-to-html@8.0.3' // html -> str
+import {toText} from 'npm:hast-util-to-text@3.1.1'
 
-import remarkPrettier from 'remark-prettier';
-import report from 'vfile-reporter';
+import remarkPrettier from 'npm:remark-prettier@2.0.0';
+import report from 'npm:vfile-reporter@7.0.4';
 
-import {toMdast, defaultHandlers, all, one} from 'hast-util-to-mdast'
-import {wrapChildren} from 'hast-util-to-mdast/lib/util/wrap-children.js'
+import {toMdast, defaultHandlers, all, one} from 'npm:hast-util-to-mdast@8.4.1'
+import {wrapChildren} from 'npm:hast-util-to-mdast@8.4.1/lib/util/wrap-children.js'
 
-import {matches, select, selectAll} from 'hast-util-select'
+import {matches, select, selectAll} from 'npm:hast-util-select@5.0.2'
 
-import remarkStringify from 'remark-stringify' // md -> str
+import remarkStringify from 'npm:remark-stringify@10.0.2' // md -> str
 //import remarkStringify from './remark/packages/remark-stringify/index.js' // md -> str
 
 /*
-import xmlParseBroken from '@starptech/rehype-webparser'
-import remarkHtml from 'remark-html' // md -> html
-import rehypeStringify from 'rehype-stringify' // html -> str
-import {visit} from 'unist-util-visit'
-import {remove} from 'unist-util-remove'
-import {h} from 'hastscript'
+import xmlParseBroken from '@starptech/rehype-webparser DENOIFY: UNKNOWN NODE BUILTIN'
+import remarkHtml from 'remark-html DENOIFY: UNKNOWN NODE BUILTIN' // md -> html
+import rehypeStringify from 'rehype-stringify DENOIFY: UNKNOWN NODE BUILTIN' // html -> str
+import {visit} from 'npm:unist-util-visit@4.1.1'
+import {remove} from 'npm:unist-util-remove@3.1.0'
+import {h} from 'npm:hastscript@7.1.0'
 */
 
 //import {wrapText} from '' // not exported by hast-util-to-mdast
@@ -110,14 +110,14 @@ const inputText = (
 
 /* TODO parse xml. https://github.com/rehypejs/rehype/issues/109
 // https://github.com/syntax-tree/xast-util-from-xml
-import {fromXml} from 'xast-util-from-xml'
-import {toXml} from 'xast-util-to-xml'
-import {fromHtml} from 'hast-util-from-html'
+import {fromXml} from 'npm:xast-util-from-xml@2.0.1'
+import {toXml} from 'xast-util-to-xml DENOIFY: UNKNOWN NODE BUILTIN'
+import {fromHtml} from 'hast-util-from-html DENOIFY: UNKNOWN NODE BUILTIN'
 
 // https://github.com/syntax-tree/xastscript
 // utility to create xast trees
-import {x} from 'xastscript'
-import {u} from 'unist-builder' // cdata
+import {x} from 'xastscript DENOIFY: UNKNOWN NODE BUILTIN'
+import {u} from 'unist-builder DENOIFY: UNKNOWN NODE BUILTIN' // cdata
 
 const tree = fromXml(await fs.readFile('example.xml'))
 console.log(tree)
