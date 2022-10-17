@@ -1,0 +1,4 @@
+[submodule "rehype"]
+	path = rehype
+	url = https://github.com/milahu/rehype
+	branch = add-option-xmlmode-to-parse-xml
