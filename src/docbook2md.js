@@ -221,32 +221,25 @@ console.log(tree)
             'xml:id': 'function-library-lib.attrsets.recursiveUpdate-example'
           },
         */
+
+        //console.log(`select title example`)
         const title = select('title', example)
+        //console.log(`select programlisting example`)
         const programlisting = select('programlisting', example)
         assert(title);
         assert(programlisting);
+
+        /* FIXME get positions from xml parse tree
         assert(programlisting.position);
         assert(programlisting.position.start.offset);
         assert(programlisting.position.end.offset);
-        /*
-        if (false) {
-          console.dir({
-            programlisting,
-            text: toText(programlisting),
-          }, { depth: 5 })
-          throw new Error('TODO')
-        }
         */
-        const cdata = inputText.slice(
-          (
-            programlisting.position.start.offset
-            + '<programlisting><![CDATA['.length
-          ),
-          (
-            programlisting.position.end.offset
-            - ']]></programlisting>'.length
-          ),
-        ).trim()
+
+        //console.dir({programlisting}, {depth:5});
+        //throw new Error('FIXME parse error in xml CDATA')
+        // TODO toText(programlisting) ?
+        const cdata = programlisting.children[0].value
+
         return [
           h(example, 'html', `### Example: ${toText(title)}\n`),
           // TODO unwrap xml <![CDATA[ ... ]]>
@@ -281,6 +274,8 @@ console.log(tree)
         //console.dir({ section }, { depth: 5 }); throw new Error('TODO')
         // properties: { 'xml:id': 'function-library-lib.attrsets.attrByPath' },
         //console.dir({ section }, { depth: 20 }); throw new Error('TODO')
+        //console.log(`select title section`)
+        //console.dir({section}, {depth:5})
         const title = select('title', section)
         assert(title);
         /** @type {string | undefined} */
@@ -360,11 +355,18 @@ console.log(tree)
       variablelist(h, variablelist) {
         // TODO better
         // this feels really wrong and stupid ...
-        return [
+        //console.dir({ variablelist }, { depth: 5 })
+        return h(variablelist, 'html', [
           h(variablelist, 'html', `### Arguments\n`),
-          variablelist.children.map((varlistentry) => {
+          h(variablelist, 'html', variablelist.children.map((varlistentry) => {
+            //console.dir({ varlistentry }, { depth: 5 })
             const term = varlistentry.children[0];
             const listitem = varlistentry.children[1];
+            if (!term || !listitem) {
+              console.dir({ term, listitem }, { depth: 5 })
+            }
+            assert(term);
+            assert(listitem);
             return [
               //h(term, 'html', `<div class="term">${toText(term).trim()}</div>\n`),
               h(term, 'html', `#### ${toText(term).trim()}\n`),
@@ -373,8 +375,8 @@ console.log(tree)
                 return h(para, 'html', toText(para).trim()+"\n")
               })
             ]
-          })
-        ]
+          }))
+        ])
       },
 
 
