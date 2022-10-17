@@ -46,43 +46,44 @@ https://github.com/syntax-tree/mdxast
 
 const t1 = Date.now()
 
-import { readFileSync } from 'https://deno.land/std@0.159.0/node/fs.ts';
-import fs from 'https://deno.land/std@0.159.0/node/fs.ts';
+import { readFileSync } from 'fs';
+import fs from 'fs';
 
-import {unified} from 'https://esm.sh/unified@10.1.2'
+import {unified} from 'unified'
 
-import rehypeParse from "https://esm.sh/rehype-parse@8.0.4"
-import type { Options as RehypeParseOptions } from "https://esm.sh/rehype-parse@8.0.4"
+//import rehypeParse from "rehype-parse"
+//import type { Options as RehypeParseOptions } from "rehype-parse"
+import rehypeParse from "../rehype/packages/rehype-parse/index.js"
 
-import rehypeRemark from "https://esm.sh/rehype-remark@9.1.2" // html -> md
-import type { H, Options as RehypeRemarkOptions } from "https://esm.sh/rehype-remark@9.1.2" // html -> md
+import rehypeRemark from "rehype-remark" // html -> md
+//import type { H, Options as RehypeRemarkOptions } from "rehype-remark" // html -> md
 //import rehypeRemark from './rehype-remark/index.js' // html -> md
 
-import { toHtml } from 'https://esm.sh/hast-util-to-html@8.0.3' // html -> str
-import {toText} from 'https://esm.sh/hast-util-to-text@3.1.1'
+//import { toHtml } from 'hast-util-to-html' // html -> str
+import {toText} from 'hast-util-to-text'
 
-//import remarkPrettier from 'https://esm.sh/remark-prettier@2.0.0';
-import report from 'https://esm.sh/vfile-reporter@7.0.4';
+//import remarkPrettier from 'remark-prettier';
+import report from 'vfile-reporter';
 
-//import {toMdast, defaultHandlers, all, one} from 'https://esm.sh/hast-util-to-mdast@8.4.1'
-import {all} from 'https://esm.sh/hast-util-to-mdast@8.4.1'
-import {wrapChildren} from 'https://esm.sh/hast-util-to-mdast@8.4.1/lib/util/wrap-children.js'
+//import {toMdast, defaultHandlers, all, one} from 'hast-util-to-mdast'
+import {all} from 'hast-util-to-mdast'
+import {wrapChildren} from 'hast-util-to-mdast/lib/util/wrap-children.js'
 
-import {Element, select, selectAll} from 'https://esm.sh/hast-util-select@5.0.2'
-//import {matches, select, selectAll} from 'https://esm.sh/hast-util-select@5.0.2'
+import {select, selectAll} from 'hast-util-select'
+//import {matches, select, selectAll} from 'hast-util-select'
 
-import remarkStringify from 'https://esm.sh/remark-stringify@10.0.2' // md -> str
-import { assert } from "https://deno.land/std@0.159.0/testing/asserts.ts";
-//import { Element } from "https://esm.sh/v96/@types/hast@2.3.4/index";
+import remarkStringify from 'remark-stringify' // md -> str
+import assert from "assert";
+//import { Element } from "v96/@types/hast";
 //import remarkStringify from './remark/packages/remark-stringify/index.js' // md -> str
 
 /*
-import xmlParseBroken from '@starptech/rehype-webparser DENOIFY: UNKNOWN NODE BUILTIN'
+import xmlParseBroken from ''
 import remarkHtml from 'remark-html DENOIFY: UNKNOWN NODE BUILTIN' // md -> html
 import rehypeStringify from 'rehype-stringify DENOIFY: UNKNOWN NODE BUILTIN' // html -> str
-import {visit} from 'https://esm.sh/unist-util-visit@4.1.1'
-import {remove} from 'https://esm.sh/unist-util-remove@3.1.0'
-import {h} from 'https://esm.sh/hastscript@7.1.0'
+import {visit} from 'unist-util-visit'
+import {remove} from 'unist-util-remove'
+import {h} from 'hastscript'
 */
 
 //import {wrapText} from '' // not exported by hast-util-to-mdast
@@ -118,7 +119,7 @@ const inputText = (
 
 /* TODO parse xml. https://github.com/rehypejs/rehype/issues/109
 // https://github.com/syntax-tree/xast-util-from-xml
-import {fromXml} from 'https://esm.sh/xast-util-from-xml@2.0.1'
+import {fromXml} from 'xast-util-from-xml'
 import {toXml} from 'xast-util-to-xml DENOIFY: UNKNOWN NODE BUILTIN'
 import {fromHtml} from 'hast-util-from-html DENOIFY: UNKNOWN NODE BUILTIN'
 
@@ -133,7 +134,7 @@ console.log(tree)
 
 // default node type is Element
 // TODO can also be Text or Comment (or so)
-type Handler = (h: H, e: Element) => any;
+//type Handler = (h: H, e: Element) => any;
 
 (unified()
 
@@ -141,7 +142,8 @@ type Handler = (h: H, e: Element) => any;
   .use(rehypeParse, {
     //fragment: true,
     emitParseErrors: true,
-  } as RehypeParseOptions)
+  //} as RehypeParseOptions)
+  })
 
   // no. parse error
   //.use(xmlParse)
@@ -286,7 +288,7 @@ type Handler = (h: H, e: Element) => any;
         //console.dir({title}); throw new Error('TODO')
         // remove title
         if (section.children) {
-          section.children = section.children.filter((node: any) => node.tagName != 'title')
+          section.children = section.children.filter((node) => node.tagName != 'title')
         }
         //const mdHeadId = id ? ` {#${id}}` : ''
         return [
@@ -359,13 +361,13 @@ type Handler = (h: H, e: Element) => any;
         // this feels really wrong and stupid ...
         return [
           h(variablelist, 'html', `### Arguments\n`),
-          variablelist.children.map((varlistentry: any) => {
+          variablelist.children.map((varlistentry) => {
             const term = varlistentry.children[0];
             const listitem = varlistentry.children[1];
             return [
               //h(term, 'html', `<div class="term">${toText(term).trim()}</div>\n`),
               h(term, 'html', `#### ${toText(term).trim()}\n`),
-              listitem.children.map((para: any) => {
+              listitem.children.map((para) => {
                 //return h(para, 'html', `<div class="para">${toText(para).trim()}</div>\n`)
                 return h(para, 'html', toText(para).trim()+"\n")
               })
@@ -413,9 +415,11 @@ type Handler = (h: H, e: Element) => any;
       */
 
 
-    } as Record <string, Handler>
+    //} as Record <string, Handler>
+    }
 
-  } as RehypeRemarkOptions)
+  //} as RehypeRemarkOptions)
+  })
 
   // markdown tree -> markdown string
   .use(remarkStringify, {
