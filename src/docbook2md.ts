@@ -359,137 +359,20 @@ type Handler = (h: H, e: Element) => any;
         // this feels really wrong and stupid ...
         return [
           h(variablelist, 'html', `### Arguments\n`),
-          variablelist.children.map(varlistentry => {
+          variablelist.children.map((varlistentry: any) => {
             const term = varlistentry.children[0];
             const listitem = varlistentry.children[1];
             return [
               //h(term, 'html', `<div class="term">${toText(term).trim()}</div>\n`),
               h(term, 'html', `#### ${toText(term).trim()}\n`),
-              listitem.children.map(para => {
+              listitem.children.map((para: any) => {
                 //return h(para, 'html', `<div class="para">${toText(para).trim()}</div>\n`)
                 return h(para, 'html', toText(para).trim()+"\n")
               })
             ]
-            return varlistentry.children[1].map(node => {
-              
-            })
           })
         ]
-
-        // what did not work ...
-
-        if (false) {
-
-          return h(node, 'paragraph', 'LALALLALA') // no
-          return h(node, 'heading', 'LALALLALA') // no
-          return h(node, 'html', 'LALALLALA') // ok
-
-          // keep the original node
-          return h(node, 'html', toHtml(node))
-
-          return {
-            type: 'heading',
-            value: 'TODO',
-            children: []
-          }
-
-          return [
-            h(node, 'heading', {depth:3}, 'TODO'),
-          ]
-          return selectAll('varlistentry', node).map(node => {
-            //return '<div>' + toText(node) + '</div>\n'
-            return h(node, 'paragraph', {depth:3}, all(h, node))
-            return h(node, 'paragraph', {depth:3}, node.children[0].children[0])
-            return h(node, 'heading', {depth:3}, node.children[0].children[0])
-            return h(node, 'heading', {depth:3}, all(h, node))
-
-            return h(
-              node,
-              'heading',
-              {lang: 'varlistentry', meta: null},
-              toText(node)
-            )
-
-            console.dir({
-              term: select('term', node),
-              varname: select('term > varname', node),
-            })
-            return h(node, 'heading', {depth:3}, toText(select('term', node)))
-            const heading = (() => {
-              // https://github.com/syntax-tree/hast-util-to-mdast/blob/main/lib/handlers/heading.js
-              const node = select('term > varname', node);
-              return h(node, 'heading', {depth}, toText(node))
-              const depth = 3
-              const wrap = h.wrapText
-              h.wrapText = false
-              const result = h(node, 'heading', {depth}, all(h, node))
-              h.wrapText = wrap
-              return result
-            })()
-            const paragraphs = (
-              // https://github.com/syntax-tree/hast-util-to-mdast/blob/main/lib/handlers/p.js
-              selectAll('listitem > para', node).map(
-                //node => h(node, 'paragraph', all(h, node))
-                node => h(node, 'paragraph', 'TODO para')
-              )
-            )
-            return [
-              heading,
-              //paragraphs,
-            ]
-          })
-          return [
-            h(node, 'heading', {depth:3}, toText(node)),
-            h(node, 'heading', {depth:4}, toText(node))
-          ];
-
-
-          //console.dir({node}, {depth:5})
-          return all(h, selectAll('varlistentry', node).map(
-            node => {
-              console.dir({varlistentry: node})
-              h(node, 'heading', {depth:3}, all(h, node))
-            }
-          ))
-          return selectAll('varlistentry', node).map(
-            //** @param {Element} node *xxxxxxxxxxxxxxxx/
-            node => {
-              const heading = (() => {
-                // https://github.com/syntax-tree/hast-util-to-mdast/blob/main/lib/handlers/heading.js
-                const node = select('term > varname', node);
-                const depth = 3
-                const wrap = h.wrapText
-                h.wrapText = false
-                const result = h(node, 'heading', {depth}, all(h, node))
-                h.wrapText = wrap
-                return result
-              })()
-              const paragraphs = (
-                // https://github.com/syntax-tree/hast-util-to-mdast/blob/main/lib/handlers/p.js
-                selectAll('listitem > para', node).map(
-                  node => h(node, 'paragraph', all(h, node))
-                )
-              )
-              return [
-                heading,
-                ...paragraphs,
-              ]
-            }
-          )
-          console.dir(node.querySelector, {depth:5})
-          throw new Error('TODO')
-          //return h(node, 'heading', {depth: 3}, toText(node.querySelector('term > varname')))
-          return h(node, 'heading', {depth: 3}, toText(node.children[0]))
-
-          return node.children.map(
-            //** @param {Element} varlistentry *xxxxxxxxxxxxxxxx/
-            varlistentry => {
-            }
-          )[0]
-        }
       },
-
-
 
 
 
