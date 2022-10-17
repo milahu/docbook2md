@@ -1,5 +1,5 @@
 {
-"compilerOptions": {
-"outDir": "out"
-}
+  "compilerOptions": {
+    "outDir": "out"
+  }
 }
