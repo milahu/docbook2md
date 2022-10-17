@@ -142,6 +142,7 @@ console.log(tree)
   .use(rehypeParse, {
     //fragment: true,
     emitParseErrors: true,
+    xmlMode: true,
   //} as RehypeParseOptions)
   })
 
