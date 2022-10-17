@@ -140,7 +140,8 @@ type Handler = (h: H, e: Element) => any;
   // html string -> html tree
   .use(rehypeParse, {
     //fragment: true,
-  })
+    emitParseErrors: true,
+  } as RehypeParseOptions)
 
   // no. parse error
   //.use(xmlParse)
