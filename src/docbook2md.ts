@@ -1,3 +1,4 @@
+// deno-lint-ignore-file no-explicit-any
 /*
 
 transform docbook xml to markdown
@@ -51,10 +52,11 @@ import fs from 'https://deno.land/std@0.159.0/node/fs.ts';
 import {unified} from 'https://esm.sh/unified@10.1.2'
 
 import rehypeParse from "https://esm.sh/rehype-parse@8.0.4"
+import type { Options as RehypeParseOptions } from "https://esm.sh/rehype-parse@8.0.4"
 
 import rehypeRemark from "https://esm.sh/rehype-remark@9.1.2" // html -> md
+import type { H, Options as RehypeRemarkOptions } from "https://esm.sh/rehype-remark@9.1.2" // html -> md
 //import rehypeRemark from './rehype-remark/index.js' // html -> md
-import type { Options as RehypeRemarkOptions } from "https://esm.sh/rehype-remark@9.1.2"
 
 import { toHtml } from 'https://esm.sh/hast-util-to-html@8.0.3' // html -> str
 import {toText} from 'https://esm.sh/hast-util-to-text@3.1.1'
@@ -66,10 +68,12 @@ import report from 'https://esm.sh/vfile-reporter@7.0.4';
 import {all} from 'https://esm.sh/hast-util-to-mdast@8.4.1'
 import {wrapChildren} from 'https://esm.sh/hast-util-to-mdast@8.4.1/lib/util/wrap-children.js'
 
-import {select, selectAll} from 'https://esm.sh/hast-util-select@5.0.2'
+import {Element, select, selectAll} from 'https://esm.sh/hast-util-select@5.0.2'
 //import {matches, select, selectAll} from 'https://esm.sh/hast-util-select@5.0.2'
 
 import remarkStringify from 'https://esm.sh/remark-stringify@10.0.2' // md -> str
+import { assert } from "https://deno.land/std@0.159.0/testing/asserts.ts";
+//import { Element } from "https://esm.sh/v96/@types/hast@2.3.4/index";
 //import remarkStringify from './remark/packages/remark-stringify/index.js' // md -> str
 
 /*
@@ -127,6 +131,10 @@ const tree = fromXml(await fs.readFile('example.xml'))
 console.log(tree)
 */
 
+// default node type is Element
+// TODO can also be Text or Comment (or so)
+type Handler = (h: H, e: Element) => any;
+
 (unified()
 
   // html string -> html tree
@@ -150,6 +158,7 @@ console.log(tree)
     // Most interesting of them is h.wrapText,
     // which is true if the mdast content can include newlines,
     // and false if not (such as in headings or table cells).
+
     handlers: {
 
       // keep some html elements
@@ -210,6 +219,12 @@ console.log(tree)
         */
         const title = select('title', example)
         const programlisting = select('programlisting', example)
+        assert(title);
+        assert(programlisting);
+        assert(programlisting.position);
+        assert(programlisting.position.start.offset);
+        assert(programlisting.position.end.offset);
+        /*
         if (false) {
           console.dir({
             programlisting,
@@ -217,6 +232,7 @@ console.log(tree)
           }, { depth: 5 })
           throw new Error('TODO')
         }
+        */
         const cdata = inputText.slice(
           (
             programlisting.position.start.offset
@@ -262,15 +278,16 @@ console.log(tree)
         // properties: { 'xml:id': 'function-library-lib.attrsets.attrByPath' },
         //console.dir({ section }, { depth: 20 }); throw new Error('TODO')
         const title = select('title', section)
+        assert(title);
         /** @type {string | undefined} */
         const id = section.properties && section.properties['xml:id']
         // TODO section id
         //console.dir({title}); throw new Error('TODO')
         // remove title
         if (section.children) {
-          section.children = section.children.filter(node => node.tagName != 'title')
+          section.children = section.children.filter((node: any) => node.tagName != 'title')
         }
-        const mdHeadId = id ? ` {#${id}}` : ''
+        //const mdHeadId = id ? ` {#${id}}` : ''
         return [
           // TODO transform <function>lib.attrset.attrByPath</function>
           //h(section, 'html', `## ${toText(title)}${mdHeadId}\n`),
@@ -290,6 +307,7 @@ console.log(tree)
           //...section.children,
         ]
 
+        /*
         return wrapChildren(h, section) // ok
 
         return all(h, section) // no
@@ -317,7 +335,6 @@ console.log(tree)
           all(h, section),
           //h(section, 'html', all(h, section)),
         ])
-        /*
         */
       },
 
@@ -512,8 +529,9 @@ console.log(tree)
       */
 
 
-    } // end of handlers: {
-  })
+    } as Record <string, Handler>
+
+  } as RehypeRemarkOptions)
 
   // markdown tree -> markdown string
   .use(remarkStringify, {
