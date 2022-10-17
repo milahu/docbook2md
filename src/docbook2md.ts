@@ -225,6 +225,9 @@ type Handler = (h: H, e: Element) => any;
         assert(programlisting.position);
         assert(programlisting.position.start.offset);
         assert(programlisting.position.end.offset);
+
+        console.dir({programlisting});
+        throw new Error('FIXME parse error in xml CDATA')
         /*
         if (false) {
           console.dir({
