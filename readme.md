@@ -3,7 +3,7 @@
 ## usage
 
 ```
-git clone https://github.com/milahu/docbook2md
+git clone --recurse-submodules https://github.com/milahu/docbook2md
 cd docbook2md
 npm install
 node docbook2md.js
