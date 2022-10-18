@@ -1,0 +1,4 @@
+packages:
+  - .
+  - rehype/packages/rehype-parse
+  - rehype/packages/rehype-parse/hast-util-from-htmlparser2
