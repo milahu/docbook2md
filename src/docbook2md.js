@@ -53,7 +53,9 @@ import {unified} from 'unified'
 
 //import rehypeParse from "rehype-parse"
 //import type { Options as RehypeParseOptions } from "rehype-parse"
+
 import rehypeParse from "../rehype/packages/rehype-parse/index.js"
+//import rehypeParse from "rehype-parse"
 
 import rehypeRemark from "rehype-remark" // html -> md
 //import type { H, Options as RehypeRemarkOptions } from "rehype-remark" // html -> md
