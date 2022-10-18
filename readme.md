@@ -1,5 +1,9 @@
 # docbook2md
 
+## deprecated
+
+:warning: deprecated in favor of https://github.com/milahu/unifiedjs-docbook
+
 ## usage
 
 ```
