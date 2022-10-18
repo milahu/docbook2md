@@ -5,7 +5,8 @@
 ```
 git clone --recurse-submodules https://github.com/milahu/docbook2md
 cd docbook2md
-npm install
+# install the pnpm workspace
+pnpm install
 node docbook2md.js
 ```
 
